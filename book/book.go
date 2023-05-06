@@ -23,9 +23,10 @@ type Book struct {
 }
 
 func InitialMigration() {
-	DB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Printf(err.Error())
+		panic("cannot connect to database")
 	}
 	DB.AutoMigrate(&Book{})
 }
