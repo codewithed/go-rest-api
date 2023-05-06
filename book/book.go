@@ -3,6 +3,7 @@ package book
 import (
 	"fmt"
 
+	"github.com/gofiber/fiber"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -29,4 +30,54 @@ func InitialMigration() {
 		panic("cannot connect to database")
 	}
 	DB.AutoMigrate(&Book{})
+}
+
+func GetBooks(c *fiber.Ctx) error {
+	var books []Book
+	DB.Find(&books)
+	return c.JSON(&books)
+}
+
+func GetBook(c *fiber.Ctx) error {
+	id := c.Params(":id")
+	var book Book
+	DB.Find(&book, id)
+	return c.JSON(&book)
+}
+
+func AddBook(c *fiber.Ctx) error {
+	book := new(Book)
+	if err := c.BodyParser(book); err != nil {
+		c.Status(500).SendString(err.Error())
+	}
+
+	DB.Save(&book)
+	return c.JSON(&book)
+}
+
+func UpdateBook(c *fiber.Ctx) error {
+	id := c.Params("id")
+	book := new(Book)
+	DB.First(&book, id)
+	if book.Title == "" {
+		c.Status(500).SendString("Book not found")
+	}
+
+	if err := c.BodyParser(&book); err != nil {
+		c.Status(500).SendString(err.Error())
+	}
+	DB.Save(&book)
+	return c.JSON(&book)
+}
+
+func DeleteBook(c *fiber.Ctx) {
+	id := c.Params("id")
+	var book Book
+	DB.First(&book, id)
+	if book.Title == "" {
+		c.Status(500).SendString("Book not found")
+	}
+
+	DB.Delete(&book)
+	c.SendString("Book suv=ccessfully deleted")
 }
