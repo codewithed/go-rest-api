@@ -12,10 +12,10 @@ func AppIsLive(c *fiber.Ctx) error {
 }
 
 func Routers(app *fiber.App) {
-	app.Get("/books", book.GetBooks)
-	app.Get("/books/:id", book.GetBook)
-	app.Post("/books/:id", book.AddBook)
-	app.Put("/books/:id", book.UpdateBook)
+	app.Get("/books", book.GetBooks())
+	app.Get("/books/:id", book.GetBook())
+	app.Post("/books/:id", book.AddBook())
+	app.Put("/books/:id", book.UpdateBook())
 	app.Delete("/books/:id", book.DeleteBook)
 }
 
