@@ -16,7 +16,7 @@ func Routers(app *fiber.App) {
 	app.Get("/books/:id", book.GetBook())
 	app.Post("/books/:id", book.AddBook())
 	app.Put("/books/:id", book.UpdateBook())
-	app.Delete("/books/:id", book.DeleteBook)
+	app.Delete("/books/:id", book.DeleteBook())
 }
 
 func main() {
