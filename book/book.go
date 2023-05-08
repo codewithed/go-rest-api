@@ -32,10 +32,12 @@ func InitialMigration() {
 	DB.AutoMigrate(&Book{})
 }
 
-func GetBooks(c *fiber.Ctx) error {
-	var books []Book
-	DB.Find(&books)
-	return c.JSON(&books)
+func GetBooks() func(*fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		var books []Book
+		DB.Find(&books)
+		return c.JSON(&books)
+	}
 }
 
 func GetBook(c *fiber.Ctx) error {
@@ -51,7 +53,7 @@ func AddBook(c *fiber.Ctx) error {
 		c.Status(500).SendString(err.Error())
 	}
 
-	DB.Save(&book)
+	DB.Create(&book)
 	return c.JSON(&book)
 }
 
@@ -70,7 +72,7 @@ func UpdateBook(c *fiber.Ctx) error {
 	return c.JSON(&book)
 }
 
-func DeleteBook(c *fiber.Ctx) {
+func DeleteBook(c *fiber.Ctx) error {
 	id := c.Params("id")
 	var book Book
 	DB.First(&book, id)
@@ -79,5 +81,5 @@ func DeleteBook(c *fiber.Ctx) {
 	}
 
 	DB.Delete(&book)
-	c.SendString("Book suv=ccessfully deleted")
+	return nil
 }

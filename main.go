@@ -1,14 +1,12 @@
 package main
 
 import (
-	"log"
-
 	"github.com/codewithed/go-rest-api/book"
 	"github.com/gofiber/fiber/v2"
 )
 
 func AppIsLive(c *fiber.Ctx) error {
-	return c.SendString("App is running live and coloured")
+	return c.JSON("App is running live and coloured")
 }
 
 func Routers(app *fiber.App) {
@@ -26,6 +24,6 @@ func main() {
 	app := fiber.New()
 	app.Get("/", AppIsLive)
 	Routers(app)
-	log.Fatal(app.Listen(":8080"))
+	app.Listen(":8080")
 
 }
