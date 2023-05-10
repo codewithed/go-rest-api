@@ -32,7 +32,7 @@ func InitialMigration() {
 	DB.AutoMigrate(&Book{})
 }
 
-func GetBooks() func(*fiber.Ctx) error {
+func GetBooks() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		var books []Book
 		DB.Find(&books)
