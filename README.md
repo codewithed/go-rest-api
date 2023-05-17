@@ -1,2 +1,2 @@
 # go-rest-api
-A rest api built with golang and Gin framework
+A rest api built with Go and Gin framework
